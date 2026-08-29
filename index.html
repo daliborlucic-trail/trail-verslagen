@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Trail Verslagen</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+<style>
+  :root{
+    --bg: #0f1115;
+    --bg-card: #171a21;
+    --text: #eef0f3;
+    --text-dim: #9aa1ad;
+    --accent: #ff7a45;
+    --accent-2: #ffb347;
+    --border: #262b35;
+    --radius: 14px;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{background:var(--bg); color:var(--text); font-family:'Inter', system-ui, sans-serif; line-height:1.55; min-height:100vh;}
+  h1,h2,h3,.brand{font-family:'Bebas Neue', 'Inter', sans-serif; letter-spacing:0.5px;}
+  a{color:inherit; text-decoration:none;}
+  img{max-width:100%; display:block;}
+  button{font-family:inherit; cursor:pointer; border:none; border-radius:10px; font-weight:600;}
+
+  nav{position:sticky; top:0; z-index:40; display:flex; align-items:center; justify-content:space-between; padding:16px 5%; background:rgba(15,17,21,0.85); backdrop-filter:blur(10px); border-bottom:1px solid var(--border);}
+  .brand{font-size:26px; display:flex; align-items:center; gap:8px;}
+  .brand span{color:var(--accent);}
+  .admin-link{border:1px solid var(--border); padding:10px 18px; border-radius:10px; font-size:13px; color:var(--text-dim);}
+  .admin-link:hover{color:var(--text); background:var(--bg-card);}
+
+  .hero{position:relative; height:78vh; min-height:460px; display:flex; align-items:flex-end;
+    background-image:
+      linear-gradient(180deg, rgba(10,10,14,0.25) 0%, rgba(10,10,14,0.35) 45%, rgba(10,10,14,0.92) 100%),
+      url('https://images.unsplash.com/photo-1752503650851-cbc3f8b00679?auto=format&fit=crop&w=1920&q=80');
+    background-size:cover; background-position:center 70%;}
+  .hero-inner{padding:0 5% 60px; max-width:800px;}
+  .hero-eyebrow{text-transform:uppercase; letter-spacing:3px; font-size:13px; color:var(--accent-2); font-weight:600; margin-bottom:14px;}
+  .hero h1{font-size:clamp(42px,7vw,84px); line-height:0.95; margin-bottom:16px;}
+  .hero p{font-size:17px; color:#d8dae0; max-width:560px;}
+
+  main{padding:60px 5% 100px; max-width:1200px; margin:0 auto;}
+  .section-head{display:flex; align-items:baseline; justify-content:space-between; margin-bottom:28px; flex-wrap:wrap; gap:12px;}
+  .section-head h2{font-size:34px;}
+  .section-head p{color:var(--text-dim); font-size:14px;}
+
+  .empty-state{text-align:center; padding:80px 20px; color:var(--text-dim); border:1px dashed var(--border); border-radius:var(--radius);}
+  .empty-state h3{font-family:'Inter'; font-size:18px; color:var(--text); margin-bottom:8px; font-weight:600;}
+
+  .grid{display:grid; grid-template-columns:repeat(auto-fill, minmax(300px, 1fr)); gap:26px;}
+  .card{background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius); overflow:hidden; display:flex; flex-direction:column; cursor:pointer; transition:transform .2s ease, border-color .2s ease;}
+  .card:hover{transform:translateY(-4px); border-color:#3a4150;}
+  .card-img{height:190px; width:100%; background:#20242c center/cover no-repeat; position:relative;}
+  .card-img.no-photo::after{content:"🏔"; position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font-size:44px; opacity:.35;}
+  .card-body{padding:18px 20px 20px; flex:1; display:flex; flex-direction:column;}
+  .card-meta{font-size:12px; color:var(--accent-2); font-weight:600; text-transform:uppercase; letter-spacing:1px; margin-bottom:6px;}
+  .card h3{font-size:24px; margin-bottom:8px; line-height:1.05;}
+  .card-sub{font-size:13px; color:var(--text-dim); margin-bottom:12px; display:flex; gap:14px; flex-wrap:wrap;}
+  .card-excerpt{font-size:14px; color:#c3c7cf; flex:1;}
+
+  .modal-overlay{position:fixed; inset:0; background:rgba(8,9,12,0.75); backdrop-filter:blur(4px); display:none; align-items:flex-start; justify-content:center; padding:40px 16px; overflow-y:auto; z-index:100;}
+  .modal-overlay.open{display:flex;}
+  .modal{background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius); width:100%; max-width:800px; padding:32px; position:relative; animation:pop .18s ease;}
+  @keyframes pop{from{opacity:0; transform:translateY(8px) scale(.98);} to{opacity:1; transform:none;}}
+  .modal-close{position:absolute; top:18px; right:18px; width:36px; height:36px; border-radius:8px; background:#1e222b; color:var(--text-dim);}
+  .modal-close:hover{color:var(--text);}
+
+  .report-hero-img{width:100%; height:320px; object-fit:cover; border-radius:10px; margin-bottom:22px; background:#20242c;}
+  .report-title{font-size:40px; margin-bottom:6px;}
+  .report-meta{color:var(--text-dim); font-size:14px; margin-bottom:22px; display:flex; gap:16px; flex-wrap:wrap;}
+  .report-meta b{color:var(--text);}
+  .report-story{font-size:16px; color:#dcdee2; white-space:pre-wrap;}
+  .report-gallery{display:grid; grid-template-columns:repeat(auto-fill,minmax(110px,1fr)); gap:8px; margin-top:24px;}
+  .report-gallery img{height:90px; width:100%; object-fit:cover; border-radius:8px; cursor:pointer; border:1px solid var(--border);}
+
+  .lightbox{position:fixed; inset:0; background:rgba(5,5,7,0.92); z-index:200; display:none; align-items:center; justify-content:center; padding:30px;}
+  .lightbox.open{display:flex;}
+  .lightbox img{max-height:90vh; max-width:90vw; border-radius:8px;}
+
+  footer{text-align:center; padding:30px 20px 50px; color:var(--text-dim); font-size:13px;}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="brand" id="siteBrand">Trail<span>Verslagen</span></div>
+  <a class="admin-link" href="/admin/">Beheer</a>
+</nav>
+
+<header class="hero">
+  <div class="hero-inner">
+    <div class="hero-eyebrow" id="siteEyebrow">Race verslagen</div>
+    <h1 id="siteTitle">Elke top<br>heeft een verhaal</h1>
+    <p id="siteSubtitle">Een overzicht van trailraces, beklimmingen en de verhalen erachter — met de foto's die het bewijzen.</p>
+  </div>
+</header>
+
+<main>
+  <div class="section-head">
+    <h2>Verslagen</h2>
+    <p id="reportCount">0 verslagen</p>
+  </div>
+  <div class="grid" id="grid"></div>
+  <div class="empty-state" id="emptyState" style="display:none;">
+    <h3>Nog geen verslagen</h3>
+    <p>Ga naar <a href="/admin/" style="color:var(--accent-2);">/admin</a> om je eerste raceverslag toe te voegen.</p>
+  </div>
+</main>
+
+<footer>Gemaakt om elke race vast te leggen 🏔</footer>
+
+<div class="modal-overlay" id="detailModal">
+  <div class="modal">
+    <button class="modal-close" id="closeDetail">✕</button>
+    <img class="report-hero-img" id="dImg">
+    <div class="card-meta" id="dRace"></div>
+    <h2 class="report-title" id="dTitle"></h2>
+    <div class="report-meta">
+      <span>📍 <b id="dLocation"></b></span>
+      <span>📅 <b id="dDate"></b></span>
+      <span>⏱ <b id="dStats"></b></span>
+    </div>
+    <div class="report-story" id="dStory"></div>
+    <div class="report-gallery" id="dGallery"></div>
+  </div>
+</div>
+
+<div class="lightbox" id="lightbox"><img id="lightboxImg"></div>
+
+<script>
+(function(){
+  "use strict";
+  const $ = (id) => document.getElementById(id);
+
+  // Netlify Identity: redirect invite/confirmation links to the admin panel
+  if (window.netlifyIdentity) {
+    window.netlifyIdentity.on("init", user => {
+      if (!user) {
+        window.netlifyIdentity.on("login", () => { document.location.href = "/admin/"; });
+      }
+    });
+  }
+
+  function escapeHtml(s){
+    const d = document.createElement("div");
+    d.textContent = s || "";
+    return d.innerHTML;
+  }
+  function fmtDate(d){
+    if(!d) return "";
+    const dt = new Date(d + "T00:00:00");
+    if(isNaN(dt)) return d;
+    return dt.toLocaleDateString('nl-NL', {day:'numeric', month:'long', year:'numeric'});
+  }
+
+  fetch('content/settings.json').then(r => r.ok ? r.json() : {}).catch(()=>({})).then(settings => {
+    if(settings.brand) $("siteBrand").innerHTML = settings.brand;
+    if(settings.eyebrow) $("siteEyebrow").textContent = settings.eyebrow;
+    if(settings.title) $("siteTitle").innerHTML = settings.title;
+    if(settings.subtitle) $("siteSubtitle").textContent = settings.subtitle;
+  });
+
+  let reports = [];
+  fetch('reports.json?_=' + Date.now()).then(r => r.ok ? r.json() : []).catch(()=>[]).then(data => {
+    reports = data || [];
+    render();
+  });
+
+  function render(){
+    const grid = $("grid");
+    grid.innerHTML = "";
+    $("reportCount").textContent = reports.length + (reports.length===1 ? " verslag" : " verslagen");
+    $("emptyState").style.display = reports.length ? "none" : "block";
+    reports.forEach(r=>{
+      const card = document.createElement("div");
+      card.className = "card";
+      const cover = r.cover;
+      card.innerHTML = `
+        <div class="card-img ${cover?'':'no-photo'}" style="${cover?`background-image:url('${cover}')`:''}"></div>
+        <div class="card-body">
+          <div class="card-meta">${escapeHtml(r.race || "Race")}</div>
+          <h3>${escapeHtml(r.title)}</h3>
+          <div class="card-sub">
+            ${r.location ? `<span>📍 ${escapeHtml(r.location)}</span>` : ""}
+            ${r.date ? `<span>📅 ${fmtDate(r.date)}</span>` : ""}
+          </div>
+          <div class="card-excerpt">${escapeHtml((r.story||"").slice(0,110))}${(r.story||"").length>110?'…':''}</div>
+        </div>`;
+      card.addEventListener("click", ()=>openDetail(r));
+      grid.appendChild(card);
+    });
+  }
+
+  function openDetail(r){
+    $("dImg").src = r.cover || "";
+    $("dImg").style.display = r.cover ? "block" : "none";
+    $("dRace").textContent = r.race || "Raceverslag";
+    $("dTitle").textContent = r.title;
+    $("dLocation").textContent = r.location || "—";
+    $("dDate").textContent = fmtDate(r.date) || "—";
+    $("dStats").textContent = r.stats || "—";
+    $("dStory").textContent = r.story || "";
+    const gal = $("dGallery");
+    gal.innerHTML = "";
+    (r.gallery || []).forEach(src=>{
+      const img = document.createElement("img");
+      img.src = src;
+      img.addEventListener("click", ()=>{
+        $("lightboxImg").src = src;
+        $("lightbox").classList.add("open");
+      });
+      gal.appendChild(img);
+    });
+    $("detailModal").classList.add("open");
+  }
+
+  $("closeDetail").addEventListener("click", ()=> $("detailModal").classList.remove("open"));
+  $("detailModal").addEventListener("click", (e)=>{ if(e.target.id==="detailModal") e.currentTarget.classList.remove("open"); });
+  $("lightbox").addEventListener("click", ()=> $("lightbox").classList.remove("open"));
+})();
+</script>
+</body>
+</html>
