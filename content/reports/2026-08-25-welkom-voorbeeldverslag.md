@@ -5,7 +5,8 @@ date: 2026-08-25
 location: Buzet
 stats: 69 km
 cover: /images/uploads/11776_20240406_201748_343755476_original.jpg
-gallery: []
+gallery:
+  - /images/uploads/11776_20240406_162143_343746910_original.jpg
 ---
 Dit is eenAlleen zij die het risico durven te nemen om te ver te gaan, kunnen mogelijk ontdekken hoe ver men kan gaan. 
 
