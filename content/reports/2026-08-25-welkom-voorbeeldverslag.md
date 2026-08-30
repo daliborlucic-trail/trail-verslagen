@@ -1,10 +1,10 @@
 ---
-title: "Welkom — dit is een voorbeeldverslag"
-race: "Voorbeeld"
+title: De eerste Ultra
+race: UTMB Istria 69k
 date: 2026-08-25
-location: "Ergens in de bergen"
-stats: "0 km · nog te lopen"
-cover: "https://images.unsplash.com/photo-1752503650851-cbc3f8b00679?auto=format&fit=crop&w=1200&q=80"
+location: Buzet
+stats: 69 km
+cover: /images/uploads/11776_20240406_201748_343755476_original.jpg
 gallery: []
 ---
 Dit is een voorbeeldverslag. Log in op /admin/ om dit te bewerken of te verwijderen, en voeg daarna je eigen raceverslagen toe met foto's.
