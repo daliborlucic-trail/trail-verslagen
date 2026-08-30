@@ -1,7 +1,7 @@
 ---
 title: De eerste Ultra
 race: UTMB Istria 69k
-date: 2026-08-25
+date: 2024-04-12
 location: Buzet
 stats: 69 km
 cover: /images/uploads/11776_20240406_201748_343755476_original.jpg
