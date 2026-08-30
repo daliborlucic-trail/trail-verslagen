@@ -1,0 +1,43 @@
+backend:
+  name: git-gateway
+  branch: main
+
+publish_mode: simple
+media_folder: "images/uploads"
+public_folder: "/images/uploads"
+
+collections:
+  - name: "reports"
+    label: "Raceverslagen"
+    label_singular: "Verslag"
+    folder: "content/reports"
+    create: true
+    delete: true
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    summary: "{{title}} — {{date}}"
+    sortable_fields: ["date", "title"]
+    fields:
+      - {label: "Titel", name: "title", widget: "string"}
+      - {label: "Naam van de race", name: "race", widget: "string", required: false}
+      - {label: "Datum", name: "date", widget: "datetime", date_format: "YYYY-MM-DD", time_format: false, format: "YYYY-MM-DD"}
+      - {label: "Locatie", name: "location", widget: "string", required: false}
+      - {label: "Afstand / tijd", name: "stats", widget: "string", required: false, hint: "Bijv. 87 km · 11u32"}
+      - {label: "Coverfoto", name: "cover", widget: "image", required: false}
+      - label: "Extra foto's"
+        name: "gallery"
+        widget: "list"
+        required: false
+        field: {label: "Foto", name: "image", widget: "image"}
+      - {label: "Verhaal", name: "body", widget: "text"}
+
+  - name: "settings"
+    label: "Site-instellingen"
+    files:
+      - label: "Algemene instellingen"
+        name: "general"
+        file: "content/settings.json"
+        fields:
+          - {label: "Sitenaam (navigatiebalk)", name: "brand", widget: "string", hint: "HTML mag, bijv. Trail<span>Verslagen</span>"}
+          - {label: "Klein label boven titel", name: "eyebrow", widget: "string"}
+          - {label: "Hoofdtitel", name: "title", widget: "string", hint: "<br> mag voor een regelafbreking"}
+          - {label: "Ondertitel", name: "subtitle", widget: "text"}
